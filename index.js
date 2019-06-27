@@ -2,7 +2,7 @@ const redis = require('redis')
 const { promisify } = require('util')
 
 const { getSession } = require('./lib/sessions')
-const { listExperiments, createExperiment, getExperiment } = require('./lib/experiments')
+const { listExperiments, saveExperiment, getExperiment } = require('./lib/experiments')
 const { listFlags, setFlag } = require('./lib/flags')
 
 class TogClient {
@@ -14,6 +14,7 @@ class TogClient {
       get: promisify(this.redisClient.get).bind(this.redisClient),
       hgetall: promisify(this.redisClient.hgetall).bind(this.redisClient),
       hmset: promisify(this.redisClient.hmset).bind(this.redisClient),
+      hdel: promisify(this.redisClient.hdel).bind(this.redisClient),
       set: promisify(this.redisClient.set).bind(this.redisClient),
       expire: promisify(this.redisClient.expire).bind(this.redisClient)
     }
@@ -43,8 +44,8 @@ class TogClient {
     return getExperiment(this.redis, namespace, name)
   }
 
-  createExperiment (namespace, name, weight, flags) {
-    return createExperiment(this.redis, namespace, name, weight, flags)
+  saveExperiment ({ namespace, name, weight, disabled, flags }) {
+    return saveExperiment(this.redis, { namespace, name, weight, disabled, flags })
   }
 }
 
