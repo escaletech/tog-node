@@ -44,8 +44,8 @@ class TogClient {
     return getExperiment(this.redis, namespace, name)
   }
 
-  saveExperiment ({ namespace, name, weight, disabled, flags }) {
-    return saveExperiment(this.redis, { namespace, name, weight, disabled, flags })
+  saveExperiment ({ namespace, name, weight, flags }) {
+    return saveExperiment(this.redis, { namespace, name, weight, flags })
   }
 }
 
