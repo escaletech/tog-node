@@ -5,6 +5,10 @@ const { getSession } = require('./lib/sessions')
 const { listExperiments, saveExperiment, getExperiment } = require('./lib/experiments')
 const { listFlags, setFlag } = require('./lib/flags')
 
+/**
+ * @typedef {import('./lib/flags').Flag} Flag
+ */
+
 class TogClient {
   constructor (redisUrl) {
     this.redisClient = redis.createClient(redisUrl)
@@ -28,6 +32,14 @@ class TogClient {
     return listFlags(this.redis, namespace)
   }
 
+  /**
+   * Sets a new or existing flag
+   * @param {string} namespace
+   * @param {string} name
+   * @param {boolean} state
+   * @param {string} [description]
+   * @returns {PromiseLike<Flag>}
+   */
   setFlag (namespace, name, state, description) {
     return setFlag(this.redis, namespace, name, state, description)
   }
