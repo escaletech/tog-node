@@ -26,7 +26,7 @@ class TogClient {
 
   /**
    * @param {string} namespace
-   * @returns {Object.<string, boolean>}
+   * @returns {Flag[]}
    */
   listFlags (namespace) {
     return listFlags(this.redis, namespace)
