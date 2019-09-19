@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    "jsdoc-plugin-typescript"
+  ],
+  "typescript": {
+    "moduleRoot": "./"
+  },
+  "opts": {
+    "destination": "./docs/"
+  },
+  "source": {
+    "include": [ "index.js", "types.js" ]
+  }
+}
