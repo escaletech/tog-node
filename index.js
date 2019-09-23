@@ -16,6 +16,12 @@ class TogClient {
    * const tog = new TogClient('redis://127.0.0.1:6379')
    */
   constructor (redisUrl) {
+    /**
+     * Underlying Redis client used for all requests.
+     * Use it, for example, for logging connection errors.
+     * @type {import('redis').RedisClient} redisClient
+     * @see https://www.npmjs.com/package/redis#api
+     */
     this.redisClient = redis.createClient(redisUrl)
     this.redisClient.on('error', err => console.log('error') || console.error(err))
     this.redis = {
