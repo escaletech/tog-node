@@ -5,7 +5,7 @@ const { getSession } = require('./lib/sessions')
 const { listExperiments, saveExperiment, getExperiment } = require('./lib/experiments')
 const { listFlags, setFlag } = require('./lib/flags')
 
-/** @type {import('../types')} */
+/** @type {import('./types')} */
 
 class TogClient {
   constructor (redisUrl) {
@@ -23,8 +23,9 @@ class TogClient {
   }
 
   /**
+   * Lists all flags that are set namespace-wide
    * @param {string} namespace
-   * @returns {Flag[]}
+   * @returns {PromiseLike<Flag[]>}
    */
   listFlags (namespace) {
     return listFlags(this.redis, namespace)
@@ -42,18 +43,41 @@ class TogClient {
     return setFlag(this.redis, namespace, name, state, description)
   }
 
+  /**
+   * Gets a session, or creates a new one if it doesn't exist
+   * @param {String} namespace - Session namespace
+   * @param {String} id - Session ID, which can be an arbitrary string
+   * @param {Number} expiration - Session duration, in seconds
+   * @returns {PromiseLike<Session>}
+   */
   getSession (namespace, id, expiration) {
     return getSession(this.redis, namespace, id, expiration)
   }
 
+  /**
+   * Lists all available experiments
+   * @param {String} namespace
+   * @returns {PromiseLike<Experiment[]>}
+   */
   listExperiments (namespace) {
     return listExperiments(this.redis, namespace)
   }
 
+  /**
+   * Gets an experiment
+   * @param {String} namespace
+   * @param {String} name
+   * @returns {PromiseLike<Experiment>}
+   */
   getExperiment (namespace, name) {
     return getExperiment(this.redis, namespace, name)
   }
 
+  /**
+   * Saves an new or existing experiment
+   * @param {Experiment} experiment
+   * @returns {PromiseLike<Experiment>}
+   */
   saveExperiment ({ namespace, name, weight, flags }) {
     return saveExperiment(this.redis, { namespace, name, weight, flags })
   }
