@@ -8,6 +8,13 @@ const { listFlags, setFlag } = require('./lib/flags')
 /** @type {import('./types').default} */
 
 class TogClient {
+  /**
+   * Creates a new TogClient for a Redis connection
+   * @param {string} redisUrl - Redis server URL
+   *
+   * @example
+   * const tog = new TogClient('redis://127.0.0.1:6379')
+   */
   constructor (redisUrl) {
     this.redisClient = redis.createClient(redisUrl)
     this.redisClient.on('error', err => console.log('error') || console.error(err))
@@ -49,8 +56,15 @@ class TogClient {
    * @param {String} id - Session ID, which can be an arbitrary string
    * @param {Number} expiration - Session duration, in seconds
    * @returns {PromiseLike<Session>}
+   *
+   * @example
+   * tog.session('default', 'abc123', 60*60*24) // expires in 1 day
+   *   .then(session => {
+   *     console.log('Experiment: ' + session.experiment)
+   *     console.log('Flags: ' + JSON.stringify(session.flags))
+   *   })
    */
-  getSession (namespace, id, expiration) {
+  session (namespace, id, expiration) {
     return getSession(this.redis, namespace, id, expiration)
   }
 
