@@ -5,7 +5,7 @@ const { getSession } = require('./lib/sessions')
 const { listExperiments, saveExperiment, getExperiment } = require('./lib/experiments')
 const { listFlags, setFlag } = require('./lib/flags')
 
-/** @type {import('./types')} */
+/** @type {import('./types').default} */
 
 class TogClient {
   constructor (redisUrl) {

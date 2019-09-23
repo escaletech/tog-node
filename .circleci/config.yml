@@ -1,0 +1,82 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:10
+
+jobs:
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+          - v1-dependencies-
+      - run: npm install
+      - run:
+          name: Run tests
+          command: npm test
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+      - run:
+          name: Build docs
+          command: npm run jsdoc
+      - persist_to_workspace:
+          root: docs
+          paths:
+            - '*'
+
+  deploy:
+    <<: *defaults
+    steps:
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: Publish package
+          command: npm publish
+
+  docs-deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: docs
+      - run:
+          name: Install and configure dependencies
+          command: |
+            npm install gh-pages@2.1.1
+            git config user.email "ci-build@escale.com.br"
+            git config user.name "ci-build"
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: ./node_modules/.bin/gh-pages --dist docs
+
+workflows:
+  version: 2
+  test-deploy:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore: gh-pages
+      - deploy:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - docs-deploy:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
