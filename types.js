@@ -20,3 +20,10 @@
  * @property {string} experiment
  * @property {Object.<string, boolean>} flags
  */
+
+/**
+ * @typedef {Object} SessionOptions
+ * @description Options for creating new sessions
+ * @property {string} experiment - Force using this experiment for a new session
+ * @property {Object.<string, boolean>} flags - Force using these flags for a new session
+ */

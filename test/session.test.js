@@ -142,5 +142,57 @@ describe('session', () => {
       expect(await redis.get('exp_sess:foo:new-feature:abc123')).toEqual('1')
       expect(await ttl(tog.redisClient, 'exp_sess:foo:new-feature:abc123')).toEqual(60)
     })
+
+    test('does not consider experiment with weight 0', async () => {
+      const { redis, tog } = newClients()
+
+      await redis.hmset('exp:foo:new-feature', ['@weight', '0', 'white', '1'])
+      await setAll(redis, { 'flag:foo:black': '1' })
+
+      const session = await tog.session('foo', 'abc123', 60)
+      expect(session).toMatchObject({
+        experiment: undefined,
+        flags: { black: true }
+      })
+
+      expect(await redis.hgetall('session:foo:abc123')).toEqual({
+        'black': '1'
+      })
+    })
+
+    test('force experiment to be used', async () => {
+      const { redis, tog } = newClients()
+
+      await redis.hmset('exp:foo:new-feature', ['@weight', '0', 'white', '1'])
+      await setAll(redis, { 'flag:foo:black': '1' })
+
+      const session = await tog.session('foo', 'abc123', 60, { experiment: 'new-feature' })
+      expect(session).toMatchObject({
+        experiment: 'new-feature',
+        flags: { black: true, white: true }
+      })
+
+      expect(await redis.hgetall('session:foo:abc123')).toEqual({
+        '@experiment': 'new-feature',
+        'black': '1',
+        'white': '1'
+      })
+    })
+
+    test('force flags to be used', async () => {
+      const { redis, tog } = newClients()
+
+      await setAll(redis, { 'flag:foo:black': '1' })
+
+      const session = await tog.session('foo', 'abc123', 60, { flags: { orange: true } })
+      expect(session).toMatchObject({
+        flags: { black: true, orange: true }
+      })
+
+      expect(await redis.hgetall('session:foo:abc123')).toEqual({
+        'black': '1',
+        'orange': '1'
+      })
+    })
   })
 })
