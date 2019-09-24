@@ -12,6 +12,7 @@ jobs:
           - v1-dependencies-{{ checksum "package-lock.json" }}
           - v1-dependencies-
       - run: npm install
+      - run: npm run lint
       - run:
           name: Run tests
           command: npm test
