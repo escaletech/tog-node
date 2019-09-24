@@ -23,7 +23,6 @@ class TogClient {
      * @see https://www.npmjs.com/package/redis#api
      */
     this.redisClient = redis.createClient(redisUrl)
-    this.redisClient.on('error', err => console.log('error') || console.error(err))
     this.redis = {
       keys: promisify(this.redisClient.keys).bind(this.redisClient),
       get: promisify(this.redisClient.get).bind(this.redisClient),
@@ -61,6 +60,7 @@ class TogClient {
    * @param {String} namespace - Session namespace
    * @param {String} id - Session ID, which can be an arbitrary string
    * @param {Number} expiration - Session duration, in seconds
+   * @param {SessionOptions} [options] - Options for a new session
    * @returns {PromiseLike<Session>}
    *
    * @example
@@ -70,8 +70,8 @@ class TogClient {
    *     console.log('Flags: ' + JSON.stringify(session.flags))
    *   })
    */
-  session (namespace, id, expiration) {
-    return getSession(this.redis, namespace, id, expiration)
+  session (namespace, id, expiration, options = {}) {
+    return getSession(this.redis, namespace, id, expiration, options)
   }
 
   /**
