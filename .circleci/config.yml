@@ -1,13 +1,10 @@
 version: 2
 
-defaults: &defaults
-  working_directory: ~/repo
-  docker:
-    - image: circleci/node:10
-
 jobs:
   test:
-    <<: *defaults
+    docker:
+      - image: circleci/node:10
+      - image: circleci/redis:4-alpine
     steps:
       - checkout
       - restore_cache:
@@ -31,17 +28,19 @@ jobs:
             - '*'
 
   deploy:
-    <<: *defaults
+    docker:
+      - image: circleci/node:10
     steps:
       - run:
           name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run:
           name: Publish package
           command: npm publish
 
   docs-deploy:
-    <<: *defaults
+    docker:
+      - image: circleci/node:10
     steps:
       - checkout
       - attach_workspace:
