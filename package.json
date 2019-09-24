@@ -9,6 +9,11 @@
     "lint": "standard",
     "jsdoc": "jsdoc -c jsdoc.json"
   },
+  "files": [
+    "/index.js",
+    "/types.js",
+    "/lib"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
