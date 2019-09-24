@@ -9,7 +9,7 @@ $ npm install tog
 ```
 
 ```js
-const TogClient = require('tog')
+const TogClient = require('tog-node')
 
 const tog = new TogClient('redis://127.0.0.1:6379')
 ```

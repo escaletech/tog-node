@@ -32,6 +32,7 @@ jobs:
     docker:
       - image: circleci/node:10
     steps:
+      - checkout
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
@@ -61,9 +62,11 @@ workflows:
   test-deploy:
     jobs:
       - test:
-          filters:
+          filters:  # required since `deploy` has tag filters AND requires `build`
             branches:
               ignore: gh-pages
+            tags:
+              only: /.*/
       - deploy:
           requires:
             - test
