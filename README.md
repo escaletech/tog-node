@@ -16,4 +16,4 @@ const tog = new TogClient('redis://127.0.0.1:6379')
 
 ## API reference
 
-See the [API reference](https://escaletech.github.io/tog-node/TogClient.html).
+See the [API reference](https://escaletech.github.io/tog-node/modules/_index_.html).
