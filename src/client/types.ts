@@ -29,3 +29,10 @@ export interface SessionOptions {
   duration?: number
   flags?: Flags
 }
+
+export class FlagNotFoundError extends Error {
+  constructor(message?: string | undefined) {
+    super(message)
+    this.name = 'FlagNotFoundError'
+  }
+}

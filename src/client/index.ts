@@ -1,4 +1,4 @@
-import { Flag, Session, SessionOptions, RedisFlag } from "./types";
+import { Flag, Session, SessionOptions, RedisFlag, FlagNotFoundError } from "./types";
 import RedisClient from './redis';
 import { parseSession, resolveState } from './sessions';
 
@@ -51,8 +51,11 @@ export class TogClient {
       : this.createSession(namespace, id, options)
   }
 
-  private getFlagByKey(key: string): Promise<Flag> {
-    return this.redis.get(key).then(value => parseFlag(key, value))
+  private async getFlagByKey(key: string):  Promise<Flag> {
+    const value = await this.redis.get(key)
+    return value
+      ? parseFlag(key, value)
+      : Promise.reject(new FlagNotFoundError('flag not found'))
   }
 
   private async createSession(namespace: string, id: string, options: SessionOptions): Promise<Session> {
