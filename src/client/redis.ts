@@ -10,6 +10,7 @@ export default class RedisClient {
   readonly on: (event: string, listener: (...args: any[]) => void) => BaseClient
   readonly quit: (cb?: Callback<'OK'>) => boolean
   readonly ttl: (key: string) => Promise<number>
+  readonly del: (key: string) => Promise<number>
 
   constructor(redisUrl: string) {
     const redis = createClient(redisUrl)
@@ -19,6 +20,7 @@ export default class RedisClient {
     this.set = promisify(redis.set).bind(redis)
     this.expire = promisify(redis.expire).bind(redis)
     this.ttl = promisify(redis.ttl).bind(redis)
+    this.del = promisify(redis.del).bind(redis)
 
     this.on = redis.on
     this.quit = redis.quit

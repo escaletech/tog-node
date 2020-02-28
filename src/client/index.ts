@@ -38,6 +38,11 @@ export class TogClient {
     return flag
   }
 
+  async deleteFlag(namespace: string, name: string): Promise<boolean> {
+    const res = await this.redis.del(keyFormat.flag(namespace, name))
+    return res > 0
+  }
+
   async session(namespace: string, id: string, options: SessionOptions): Promise<Session> {
     const key = `session:${namespace}:${id}`
     const value = await this.redis.get(key)
