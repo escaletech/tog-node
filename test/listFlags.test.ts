@@ -29,7 +29,7 @@ describe('list flags', () => {
         : ({ namespace, name, rollout: [rollout] })
     )
 
-    const saveFlag = flag => redis.set(`flag:${flag.namespace}:${flag.name}`, JSON.stringify(flag))
+    const saveFlag = flag => redis.set(`tog2:flag:${flag.namespace}:${flag.name}`, JSON.stringify(flag))
     await Promise.all(sources.map(saveFlag))
 
     const flags = await tog.listFlags('foo')

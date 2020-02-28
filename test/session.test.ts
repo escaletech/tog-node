@@ -7,7 +7,7 @@ describe('session', () => {
     test('existing', async () => {
       const [tog, redis] = newClients()
 
-      await redis.set('session:foo:abc123', JSON.stringify({ black: true, white: false }))
+      await redis.set('tog2:session:foo:abc123', JSON.stringify({ black: true, white: false }))
 
       const session = await tog.session('foo', 'abc123', { duration: 60 })
       expect(session).toEqual({
@@ -49,11 +49,11 @@ describe('session', () => {
       })
 
       // saved session
-      expect(JSON.parse(await redis.get('session:foo:abc123')))
+      expect(JSON.parse(await redis.get('tog2:session:foo:abc123')))
         .toMatchObject({ black: true, white: false })
 
       // set expiration
-      expect(await redis.ttl('session:foo:abc123')).toEqual(60)
+      expect(await redis.ttl('tog2:session:foo:abc123')).toEqual(60)
     })
 
     test('using rigged variant', async () => {
@@ -73,7 +73,7 @@ describe('session', () => {
       })
 
       // saved session
-      expect(JSON.parse(await redis.get('session:foo:abc123')))
+      expect(JSON.parse(await redis.get('tog2:session:foo:abc123')))
         .toMatchObject({ black: true, white: true })
     })
 
@@ -94,7 +94,7 @@ describe('session', () => {
       })
 
       // saved session
-      expect(JSON.parse(await redis.get('session:foo:abc123')))
+      expect(JSON.parse(await redis.get('tog2:session:foo:abc123')))
         .toMatchObject({ black: true, white: false })
     })
 
@@ -115,7 +115,7 @@ describe('session', () => {
       })
 
       // saved session
-      expect(JSON.parse(await redis.get('session:foo:abc123')))
+      expect(JSON.parse(await redis.get('tog2:session:foo:abc123')))
         .toMatchObject({ black: true, white: false, blue: true })
     })
 
@@ -136,7 +136,7 @@ describe('session', () => {
       })
 
       // saved session
-      expect(JSON.parse(await redis.get('session:foo:abc123')))
+      expect(JSON.parse(await redis.get('tog2:session:foo:abc123')))
         .toMatchObject({ black: true, white: true })
     })
   })

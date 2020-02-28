@@ -6,10 +6,10 @@ export * from './types'
 
 const keyFormat = {
   flag(namespace: string, name: string): string {
-    return `flag:${namespace}:${name}`
+    return `tog2:flag:${namespace}:${name}`
   },
   session(namespace: string, id: string): string {
-    return `session:${namespace}:${id}`
+    return `tog2:session:${namespace}:${id}`
   }
 }
 
@@ -44,7 +44,7 @@ export class TogClient {
   }
 
   async session(namespace: string, id: string, options: SessionOptions): Promise<Session> {
-    const key = `session:${namespace}:${id}`
+    const key = keyFormat.session(namespace, id)
     const value = await this.redis.get(key)
     return value
       ? parseSession(namespace, id, value)
@@ -76,7 +76,7 @@ export class TogClient {
   }
 
   private async saveSession(session: Session, duration: number) {
-    const key = `session:${session.namespace}:${session.id}`
+    const key = keyFormat.session(session.namespace, session.id)
     await this.redis.set(key, JSON.stringify(session.flags), 'EX', duration)
   }
 }

@@ -16,7 +16,7 @@ describe.only('save flag', () => {
     }
     await tog.saveFlag(flag)
 
-    expect(await redis.get('flag:foo:black'))
+    expect(await redis.get('tog2:flag:foo:black'))
       .toBe(JSON.stringify({ rollout: flag.rollout }))
   })
 
@@ -30,7 +30,7 @@ describe.only('save flag', () => {
     }
     await tog.saveFlag(flag)
 
-    expect(await redis.get('flag:foo:black'))
+    expect(await redis.get('tog2:flag:foo:black'))
       .toBe(JSON.stringify({ rollout: flag.rollout }))
   })
 
@@ -45,7 +45,7 @@ describe.only('save flag', () => {
     }
     await tog.saveFlag(flag)
 
-    const saved = JSON.parse(await redis.get('flag:foo:black'))
+    const saved = JSON.parse(await redis.get('tog2:flag:foo:black'))
     expect(saved.description).toBe('some description')
   })
 
@@ -61,7 +61,7 @@ describe.only('save flag', () => {
     }
     await tog.saveFlag(flag)
 
-    const saved = JSON.parse(await redis.get('flag:foo:black'))
+    const saved = JSON.parse(await redis.get('tog2:flag:foo:black'))
     expect(saved.rollout).toMatchObject(flag.rollout)
   })
 })

@@ -23,7 +23,7 @@ export function cleanUp(): Promise<any> {
 
 export function saveAllFlags (redis: RedisClient, flags: Flag[]): Promise<any> {
   return Promise.all(flags.map(flag =>
-    redis.set(`flag:${flag.namespace}:${flag.name}`, JSON.stringify(flag))))
+    redis.set(`tog2:flag:${flag.namespace}:${flag.name}`, JSON.stringify(flag))))
 }
 
 afterAll(() => clients.forEach(c => c.quit()))
