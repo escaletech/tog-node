@@ -3,5 +3,6 @@
     "./src/index.ts"
   ],
   "mode": "library",
-  "out": "docs"
+  "out": "docs",
+  "theme": "minimal"
 }
