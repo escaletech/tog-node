@@ -5,15 +5,47 @@ Node JS client library that implements the [Tog specification](https://github.co
 ## Usage
 
 ```sh
-$ npm install tog
+$ npm install tog-node
 ```
+
+For details, see the full [API reference](https://escaletech.github.io/tog-node/modules/_index_.html).
+
+### For using sessions
+
+[`SessionClient` reference](https://escaletech.github.io/tog-node/classes/_index_.sessionclient.html)
 
 ```js
-const TogClient = require('tog-node')
+const { SessionClient } = require('tog-node')
 
-const tog = new TogClient('redis://127.0.0.1:6379')
+const sessions = new SessionClient('redis://127.0.0.1:6379')
+
+// wherever you whish to retrieve a session
+const session = await sessions.session('my_app', 'session-123-xyz', { duration: 60 })
+
+const buttonColor = session.flags['blue-button'] ? 'blue' : 'red'
 ```
 
-## API reference
+### For managing flags
 
-See the [API reference](https://escaletech.github.io/tog-node/TogClient.html).
+[`FlagClient` reference](https://escaletech.github.io/tog-node/classes/_index_.flagclient.html)
+
+```js
+const { FlagClient } = require('tog-node')
+
+const flags = new FlagClient('redis://127.0.0.1:6379')
+
+const allFlags = await flags.listFlags('my_app')
+
+const oneFlag = await flags.getFlag('my_app', 'blue-button')
+
+await flags.saveFlag({
+  namespace: 'my_app',
+  name: 'blue-button',
+  description: 'Makes the call-to-action button blue',
+  rollout: [
+    { percentage: 30, value: true } // will be `true` for 30% of users
+  ]
+})
+
+const deleted = await flags.deleteFlag('my_app', 'blue-button')
+```

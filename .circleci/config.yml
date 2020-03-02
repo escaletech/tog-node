@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  test:
+  build-and-test:
     docker:
       - image: circleci/node:10
       - image: circleci/redis:4-alpine
@@ -9,24 +9,27 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v1-dependencies-
       - run: npm install
-      - run: npm run lint
-      - run:
-          name: Run tests
-          command: npm test
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
       - run:
+          name: Run tests
+          command: npm test
+      - run:
+          name: Build
+          command: npm run build
+      - run:
           name: Build docs
-          command: npm run jsdoc
+          command: npm run typedoc
       - persist_to_workspace:
-          root: docs
+          root: .
           paths:
-            - '*'
+            - docs
+            - lib
 
   deploy:
     docker:
@@ -57,29 +60,35 @@ jobs:
           name: Deploy docs to gh-pages branch
           command: ./node_modules/.bin/gh-pages --dist docs
 
+ci_only: &ci_only
+  filters:
+    branches:
+      ignore: gh-pages
+    tags:
+      ignore: /.*/
+
+release_only: &release_only
+  filters:
+    branches:
+      ignore: /.*/
+    tags:
+      only: /^v.*/
+
 workflows:
   version: 2
-  test-deploy:
+  ci:
     jobs:
-      - test:
-          filters:  # required since `deploy` has tag filters AND requires `build`
-            branches:
-              ignore: gh-pages
-            tags:
-              only: /.*/
+      - build-and-test:
+          <<: *ci_only
+  release:
+    jobs:
+      - build-and-test:
+          <<: *release_only
       - deploy:
+          <<: *release_only
           requires:
-            - test
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+            - build-and-test
       - docs-deploy:
+          <<: *release_only
           requires:
-            - test
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+            - build-and-test
