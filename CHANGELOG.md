@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/escaletech/tog-node/compare/v0.3.0...v0.3.1) (2020-03-02)
+
+
+### Bug Fixes
+
+* correct NPM package ([ffeb584](https://github.com/escaletech/tog-node/commit/ffeb5840b0e95f1c5e2e18077c90e5900c93fcb9))
+
 ## [0.3.0](https://github.com/escaletech/tog-node/compare/v0.2.0...v0.3.0) (2020-03-02)
 
 
