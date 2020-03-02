@@ -61,7 +61,7 @@ jobs:
             touch docs/.nojekyll
       - run:
           name: Deploy docs to gh-pages branch
-          command: ./node_modules/.bin/gh-pages --dist docs
+          command: ./node_modules/.bin/gh-pages -t true --dist docs
 
 release_only: &release_only
   filters:
