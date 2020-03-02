@@ -58,6 +58,7 @@ jobs:
             npm install gh-pages@2.1.1
             git config user.email "ci-build@escale.com.br"
             git config user.name "ci-build"
+            touch docs/.nojekyll
       - run:
           name: Deploy docs to gh-pages branch
           command: ./node_modules/.bin/gh-pages --dist docs
