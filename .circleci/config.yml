@@ -24,7 +24,7 @@ jobs:
           command: npm run build
       - run:
           name: Build docs
-          command: npm run typedoc
+          command: npm run docs
       - persist_to_workspace:
           root: .
           paths:

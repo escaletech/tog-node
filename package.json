@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --runInBand",
     "test:watch": "jest --watch --runInBand",
-    "typedoc": "typedoc",
+    "docs": "typedoc",
+    "postdocs": "cp jekyll.config.yml docs/config.yml",
     "build": "tsc",
     "release": "./scripts/release.sh"
   },
