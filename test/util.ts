@@ -1,15 +1,22 @@
 import redis from 'redis'
 import { promisify } from 'util'
 
-import { TogClient, Flag } from '../src'
+import { FlagClient, SessionClient, Flag } from '../src'
 import RedisClient from '../src/redis'
 
 const redisUrl = 'redis://127.0.0.1:6379/1'
 
 const clients = []
 
-export function newClients (n: number = 1): [TogClient, RedisClient] {
-  const tog = new TogClient(redisUrl)
+export function newFlagClient (n: number = 1): [FlagClient, RedisClient] {
+  const tog = new FlagClient(redisUrl)
+  tog.redis.redis.on('error', err => fail(err))
+  clients.push(tog.redis.redis)
+  return [tog, tog.redis]
+}
+
+export function newSessionClient (n: number = 1): [SessionClient, RedisClient] {
+  const tog = new SessionClient(redisUrl)
   tog.redis.redis.on('error', err => fail(err))
   clients.push(tog.redis.redis)
   return [tog, tog.redis]

@@ -1,11 +1,11 @@
-import { newClients, cleanUp, saveAllFlags } from './util'
+import { newSessionClient, cleanUp, saveAllFlags } from './util'
 
 describe('session', () => {
   afterEach(() => cleanUp())
 
   describe('retrieves session', () => {
     test('existing', async () => {
-      const [tog, redis] = newClients()
+      const [tog, redis] = newSessionClient()
 
       await redis.set('tog2:session:foo:abc123', JSON.stringify({ black: true, white: false }))
 
@@ -18,7 +18,7 @@ describe('session', () => {
     })
 
     test('empty session', async () => {
-      const [tog, redis] = newClients()
+      const [tog, redis] = newSessionClient()
 
       const session = await tog.session('foo', 'abc123', { duration: 60 })
       expect(session).toEqual({
@@ -33,7 +33,7 @@ describe('session', () => {
 
   describe('creates session', () => {
     test('from static flags', async () => {
-      const [tog, redis] = newClients()
+      const [tog, redis] = newSessionClient()
 
       const namespace = 'foo'
       await saveAllFlags(redis, [
@@ -57,7 +57,7 @@ describe('session', () => {
     })
 
     test('using rigged variant', async () => {
-      const [tog, redis] = newClients()
+      const [tog, redis] = newSessionClient()
 
       const namespace = 'foo'
       await saveAllFlags(redis, [
@@ -78,7 +78,7 @@ describe('session', () => {
     })
 
     test('disconsidering unprioritized variant', async () => {
-      const [tog, redis] = newClients()
+      const [tog, redis] = newSessionClient()
 
       const namespace = 'foo'
       await saveAllFlags(redis, [
@@ -99,7 +99,7 @@ describe('session', () => {
     })
 
     test('forcing a new flag to be set', async () => {
-      const [tog, redis] = newClients()
+      const [tog, redis] = newSessionClient()
 
       const namespace = 'foo'
       await saveAllFlags(redis, [
@@ -120,7 +120,7 @@ describe('session', () => {
     })
 
     test('forcing a flag to be overridden', async () => {
-      const [tog, redis] = newClients()
+      const [tog, redis] = newSessionClient()
 
       const namespace = 'foo'
       await saveAllFlags(redis, [

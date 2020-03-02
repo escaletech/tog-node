@@ -1,13 +1,11 @@
 import { Flag } from '../src'
-import { newClients, cleanUp } from './util'
-
-/** @type {import('../types')} */
+import { newFlagClient, cleanUp } from './util'
 
 describe.only('save flag', () => {
   afterEach(() => cleanUp())
 
   test('enabled flag', async () => {
-    const [tog, redis] = newClients()
+    const [tog, redis] = newFlagClient()
 
     const flag: Flag = {
       namespace: 'foo',
@@ -21,7 +19,7 @@ describe.only('save flag', () => {
   })
 
   test('disabled flag', async () => {
-    const [tog, redis] = newClients()
+    const [tog, redis] = newFlagClient()
 
     const flag: Flag = {
       namespace: 'foo',
@@ -35,7 +33,7 @@ describe.only('save flag', () => {
   })
 
   test('flag with description', async () => {
-    const [tog, redis] = newClients()
+    const [tog, redis] = newFlagClient()
 
     const flag: Flag = {
       namespace: 'foo',
@@ -50,7 +48,7 @@ describe.only('save flag', () => {
   })
 
   test('flag with variants', async () => {
-    const [tog, redis] = newClients()
+    const [tog, redis] = newFlagClient()
 
     const flag: Flag = {
       namespace: 'foo',

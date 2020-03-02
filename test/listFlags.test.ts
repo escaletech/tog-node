@@ -1,11 +1,11 @@
 import { Flag, Rollout } from '../src'
-import { newClients, cleanUp } from './util'
+import { newFlagClient, cleanUp } from './util'
 
 describe('list flags', () => {
   afterEach(() => cleanUp())
 
   test('returns empty list', async () => {
-    const [tog] = newClients()
+    const [tog] = newFlagClient()
 
     const flags = await tog.listFlags('foo')
 
@@ -13,7 +13,7 @@ describe('list flags', () => {
   })
 
   test('returns existing flags', async () => {
-    const [tog, redis] = newClients()
+    const [tog, redis] = newFlagClient()
 
     const flagTable: [string, string, Rollout, string?][] = [
       ['foo', 'orange', { value: true }],
