@@ -80,6 +80,6 @@ export class FlagClient {
 }
 
 function parseFlag (key: string, value: string): Flag {
-  const [, namespace, name] = key.split(':')
+  const [,, namespace, name] = key.split(':')
   return { namespace, name, ...JSON.parse(value) }
 }
