@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/escaletech/tog-node/compare/v0.3.1...v0.3.2) (2020-03-02)
+
+
+### Bug Fixes
+
+* fix flag parsing, along with broken test ([8257f96](https://github.com/escaletech/tog-node/commit/8257f962dddd26a76566e5f539c6a8b526425096))
+
 ### [0.3.1](https://github.com/escaletech/tog-node/compare/v0.3.0...v0.3.1) (2020-03-02)
 
 
