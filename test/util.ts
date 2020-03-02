@@ -2,7 +2,7 @@ import redis from 'redis'
 import { promisify } from 'util'
 
 import { TogClient, Flag } from '../src'
-import RedisClient from '../src/client/redis'
+import RedisClient from '../src/redis'
 
 const redisUrl = 'redis://127.0.0.1:6379/1'
 

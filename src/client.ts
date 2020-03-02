@@ -2,8 +2,6 @@ import { Flag, Session, SessionOptions, RedisFlag, FlagNotFoundError } from "./t
 import RedisClient from './redis';
 import { parseSession, resolveState } from './sessions';
 
-export * from './types'
-
 const keyFormat = {
   flag(namespace: string, name: string): string {
     return `tog2:flag:${namespace}:${name}`
@@ -51,6 +49,9 @@ export class TogClient {
       : this.createSession(namespace, id, options)
   }
 
+  /**
+   * @hidden
+   */
   private async getFlagByKey(key: string):  Promise<Flag> {
     const value = await this.redis.get(key)
     return value
@@ -58,6 +59,9 @@ export class TogClient {
       : Promise.reject(new FlagNotFoundError('flag not found'))
   }
 
+  /**
+   * @hidden
+   */
   private async createSession(namespace: string, id: string, options: SessionOptions): Promise<Session> {
     const flagOverrides = options && options.flags || {}
     const flags = (await this.listFlags(namespace))
@@ -75,6 +79,9 @@ export class TogClient {
     return session
   }
 
+  /**
+   * @hidden
+   */
   private async saveSession(session: Session, duration: number) {
     const key = keyFormat.session(session.namespace, session.id)
     await this.redis.set(key, JSON.stringify(session.flags), 'EX', duration)
