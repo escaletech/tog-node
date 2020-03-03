@@ -53,6 +53,14 @@ export interface SessionOptions {
   flags?: Flags
 }
 
+/**
+ * Options for creating clients
+ */
+export interface ClientOptions {
+  /** Whether to connect to Redis as a cluster or not */
+  cluster?: boolean
+}
+
 /** Error that is thrown when a flag cannot be found */
 export class FlagNotFoundError extends Error {
   constructor(message?: string | undefined) {

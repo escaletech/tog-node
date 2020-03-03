@@ -1,28 +1,19 @@
-import { createClient, RedisClient as BaseClient, Callback } from 'redis'
-import { promisify } from 'util'
+import { KeyType, ValueType } from 'ioredis'
 
-export default class RedisClient {
-  readonly redis: BaseClient
-  readonly keys: (pattern: string) => Promise<string[]>
-  readonly get: (key: string) => Promise<string>
-  readonly set: (key: string, value: string, flag?: string, duration?: number) => Promise<'OK'>
-  readonly expire: (key: string) => Promise<number>
-  readonly on: (event: string, listener: (...args: any[]) => void) => BaseClient
-  readonly quit: (cb?: Callback<'OK'>) => boolean
-  readonly ttl: (key: string) => Promise<number>
-  readonly del: (key: string) => Promise<number>
+export interface Redis {
+        get(key: KeyType): Promise<string | null>;
 
-  constructor(redisUrl: string) {
-    const redis = createClient(redisUrl)
-    this.redis = redis
-    this.keys = promisify(redis.keys).bind(redis)
-    this.get = promisify(redis.get).bind(redis)
-    this.set = promisify(redis.set).bind(redis)
-    this.expire = promisify(redis.expire).bind(redis)
-    this.ttl = promisify(redis.ttl).bind(redis)
-    this.del = promisify(redis.del).bind(redis)
+        set(
+            key: KeyType,
+            value: ValueType,
+            expiryMode?: string | any[],
+            time?: number | string,
+            setMode?: number | string,
+        ): Promise<string>;
 
-    this.on = redis.on
-    this.quit = redis.quit
-  }
+        del(...keys: KeyType[]): Promise<number>;
+
+        keys(pattern: string): Promise<string[]>;
+
+        quit(): Promise<string>;
 }

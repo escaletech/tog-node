@@ -1,5 +1,6 @@
-import { Flag, Rollout, FlagNotFoundError } from "./types";
-import RedisClient, { Redis } from 'ioredis';
+import { Flag, Rollout, FlagNotFoundError, ClientOptions } from "./types";
+import RedisClient from 'ioredis';
+import { Redis } from './redis'
 import { flagKey } from './keys'
 
 interface RedisFlag {
@@ -22,8 +23,10 @@ export class FlagClient {
   /**
    * @param redisUrl The Redis connection string
    */
-  constructor(redisUrl: string) {
-    this.redis = new RedisClient(redisUrl)
+  constructor(redisUrl: string, options: ClientOptions = {}) {
+    this.redis = options.cluster
+      ? new RedisClient.Cluster([redisUrl])
+      : new RedisClient(redisUrl)
   }
 
   /**

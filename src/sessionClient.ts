@@ -1,5 +1,5 @@
 import { Session, SessionOptions } from "./types";
-import { Redis } from 'ioredis';
+import { Redis } from './redis';
 import { parseSession, resolveState } from './sessions';
 import { sessionKey } from './keys'
 import { FlagClient } from "./flagClient";
