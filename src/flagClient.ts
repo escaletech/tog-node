@@ -1,6 +1,5 @@
 import { Flag, Rollout, FlagNotFoundError, ClientOptions } from "./types";
-import RedisClient from 'ioredis';
-import { Redis } from './redis'
+import RedisClient, { Redis, Cluster } from 'ioredis';
 import { flagKey } from './keys'
 
 interface RedisFlag {
@@ -18,7 +17,7 @@ interface RedisFlag {
  * ```
  */
 export class FlagClient {
-  readonly redis: Redis
+  readonly redis: Redis | Cluster
 
   /**
    * @param redisUrl The Redis connection string
@@ -34,7 +33,10 @@ export class FlagClient {
    * @param namespace Flags namespace
    */
   async listFlags(namespace: string): Promise<Flag[]> {
-    const keys = await this.redis.keys(flagKey(namespace, '*'))
+    const keys = 'nodes' in this.redis
+      ? await Promise.all(this.redis.nodes('all').map(n => n.keys(flagKey(namespace, '*'))))
+          .then(keys => Array.from(new Set<string>(([] as string[]).concat(...keys))))
+      : await this.redis.keys(flagKey(namespace, '*'))
     return await Promise.all(keys.sort().map(key => this.getFlagByKey(key)))
   }
 
