@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.5](https://github.com/escaletech/tog-node/compare/v0.3.4...v0.3.5) (2020-03-03)
+
+
+### Features
+
+* add cluster support to session client ([5f80f60](https://github.com/escaletech/tog-node/commit/5f80f6062e7fbcb04a6fe26c9ac29467a5471fe9))
+
 ### [0.3.4](https://github.com/escaletech/tog-node/compare/v0.3.3...v0.3.4) (2020-03-03)
 
 
