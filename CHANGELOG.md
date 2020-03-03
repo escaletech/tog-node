@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.6](https://github.com/escaletech/tog-node/compare/v0.3.5...v0.3.6) (2020-03-03)
+
+
+### Bug Fixes
+
+* consider all redis nodes when listing flags ([9f6dd84](https://github.com/escaletech/tog-node/commit/9f6dd8452156edbe243f90499c3dd261739933ca))
+
 ### [0.3.5](https://github.com/escaletech/tog-node/compare/v0.3.4...v0.3.5) (2020-03-03)
 
 
