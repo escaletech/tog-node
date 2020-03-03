@@ -1,4 +1,4 @@
-import { Session, SessionOptions } from "./types";
+import { Session, SessionOptions, ClientOptions } from "./types";
 import { Redis } from './redis';
 import { parseSession, resolveState } from './sessions';
 import { sessionKey } from './keys'
@@ -20,8 +20,8 @@ export class SessionClient {
   /**
    * @param redisUrl The Redis connection string
    */
-  constructor(redisUrl: string) {
-    this.flags = new FlagClient(redisUrl)
+  constructor(redisUrl: string, options: ClientOptions = {}) {
+    this.flags = new FlagClient(redisUrl, options)
     this.redis = this.flags.redis
   }
 
