@@ -1,5 +1,5 @@
 import { Flag, Rollout, FlagNotFoundError } from "./types";
-import RedisClient from './redis';
+import RedisClient, { Redis } from 'ioredis';
 import { flagKey } from './keys'
 
 interface RedisFlag {
@@ -17,7 +17,7 @@ interface RedisFlag {
  * ```
  */
 export class FlagClient {
-  readonly redis: RedisClient
+  readonly redis: Redis
 
   /**
    * @param redisUrl The Redis connection string

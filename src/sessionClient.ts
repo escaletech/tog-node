@@ -1,5 +1,5 @@
 import { Session, SessionOptions } from "./types";
-import RedisClient from './redis';
+import { Redis } from 'ioredis';
 import { parseSession, resolveState } from './sessions';
 import { sessionKey } from './keys'
 import { FlagClient } from "./flagClient";
@@ -15,7 +15,7 @@ import { FlagClient } from "./flagClient";
  */
 export class SessionClient {
   private readonly flags: FlagClient
-  readonly redis: RedisClient
+  readonly redis: Redis
 
   /**
    * @param redisUrl The Redis connection string
