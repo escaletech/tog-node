@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.4](https://github.com/escaletech/tog-node/compare/v0.3.3...v0.3.4) (2020-03-03)
+
+
+### Features
+
+* add cluster support as an option ([c3900e5](https://github.com/escaletech/tog-node/commit/c3900e55cf8f92a68a49f7ac3f9b5f8f4eae4175))
+
 ### [0.3.3](https://github.com/escaletech/tog-node/compare/v0.3.2...v0.3.3) (2020-03-03)
 
 
