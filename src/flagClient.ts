@@ -77,19 +77,4 @@ export class FlagClient {
     const res = await this.redis.hdel(namespaceKey(namespace), name)
     return res > 0
   }
-
-  /**
-   * @hidden
-   */
-  private async getFlagByKey(key: string):  Promise<Flag> {
-    const value = await this.redis.get(key)
-    return value
-      ? parseFlag(key, value)
-      : Promise.reject(new FlagNotFoundError('flag not found'))
-  }
-}
-
-function parseFlag (key: string, value: string): Flag {
-  const [,, namespace, name] = key.split(':')
-  return { namespace, name, ...JSON.parse(value) }
 }

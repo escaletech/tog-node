@@ -1,8 +1,7 @@
 import { Session, SessionOptions, ClientOptions } from "./types";
-import { Redis, Cluster } from 'ioredis';
-import { parseSession, resolveState } from './sessions';
-import { sessionKey } from './keys'
+import { resolveState } from './sessions';
 import { FlagClient } from "./flagClient";
+import { Redis } from "./redis";
 
 /**
  * A client consuming sessions
@@ -15,7 +14,7 @@ import { FlagClient } from "./flagClient";
  */
 export class SessionClient {
   private readonly flags: FlagClient
-  readonly redis: Redis | Cluster
+  readonly redis: Redis
 
   /**
    * @param redisUrl The Redis connection string
@@ -32,17 +31,6 @@ export class SessionClient {
    * @param options Options used when creating the flag, which are ignored if it already exists
    */
   async session(namespace: string, id: string, options: SessionOptions): Promise<Session> {
-    const key = sessionKey(namespace, id)
-    const value = await this.redis.get(key)
-    return value
-      ? parseSession(namespace, id, value)
-      : this.createSession(namespace, id, options)
-  }
-
-  /**
-   * @hidden
-   */
-  private async createSession(namespace: string, id: string, options: SessionOptions): Promise<Session> {
     const flagOverrides = options && options.flags || {}
     const flags = (await this.flags.listFlags(namespace))
       .reduce((all, flag) => ({
@@ -55,18 +43,6 @@ export class SessionClient {
       flags: { ...flags, ...flagOverrides }
     }
 
-    if (Object.keys(session.flags).length > 0) {
-      await this.saveSession(session, options.duration || 86400)
-    }
-
     return session
-  }
-
-  /**
-   * @hidden
-   */
-  private async saveSession(session: Session, duration: number) {
-    const key = sessionKey(session.namespace, session.id)
-    await this.redis.set(key, JSON.stringify(session.flags), 'EX', duration)
   }
 }
