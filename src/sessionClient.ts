@@ -45,7 +45,10 @@ export class SessionClient {
   private async createSession(namespace: string, id: string, options: SessionOptions): Promise<Session> {
     const flagOverrides = options && options.flags || {}
     const flags = (await this.flags.listFlags(namespace))
-      .reduce((all, flag) => ({ ...all, [flag.name]: resolveState(flag.rollout) }), {})
+      .reduce((all, flag) => ({
+        ...all,
+        [flag.name]: resolveState(flag.rollout, flag.timestamp || 0, id)
+      }), {})
     const session: Session = {
       namespace,
       id,
