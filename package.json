@@ -31,7 +31,8 @@
     "jest": "^24.8.0",
     "standard-version": "^7.1.0",
     "typedoc": "^0.17.0-3",
-    "typescript": "^3.8.2"
+    "typescript": "^3.8.2",
+    "wait-for-expect": "^3.0.2"
   },
   "babel": {
     "presets": [

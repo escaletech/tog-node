@@ -1,8 +1,11 @@
-import { Session, SessionOptions, ClientOptions, SessionClientOptions } from "./types";
+import RedisClient from 'ioredis';
+
+import { Flag, Session, SessionOptions, SessionClientOptions } from "./types";
 import { resolveState } from './sessions';
 import { FlagClient } from "./flagClient";
 import { Redis } from "./redis";
 import { Logger, defaultLogger } from "./logger";
+import { namespaceChangedKey } from "./keys";
 
 const DEFAULT_TIMEOUT = 300
 
@@ -20,6 +23,8 @@ export class SessionClient {
   private readonly logger: Logger
   private readonly flags: FlagClient
   readonly redis: Redis
+  readonly subscriber: Redis
+  readonly cache: {[namespace: string]: Promise<Flag[]>}
 
   /**
    * @param redisUrl The Redis connection string
@@ -29,6 +34,14 @@ export class SessionClient {
     this.logger = options.logger || defaultLogger
     this.flags = new FlagClient(redisUrl, options)
     this.redis = this.flags.redis
+    this.cache = {}
+
+    this.subscriber = options.cluster
+      ? new RedisClient.Cluster([redisUrl])
+      : new RedisClient(redisUrl)
+
+    this.subscriber.subscribe(namespaceChangedKey)
+    this.subscriber.on('message', (key, namespace) => this.clearCache(namespace))
   }
 
   /**
@@ -42,7 +55,7 @@ export class SessionClient {
       const flagOverrides = options && options.flags || {}
       const availableFlags = await withTimeout(
         this.options.timeout || DEFAULT_TIMEOUT,
-        () => this.flags.listFlags(namespace))
+        () => this.listFlags(namespace))
       const flags = availableFlags
         .reduce((all, flag) => ({
           ...all,
@@ -59,6 +72,15 @@ export class SessionClient {
       this.logger.error(e)
       return { namespace, id, flags: {} }
     }
+  }
+
+  private clearCache(namespace: string) {
+    this.logger.info(`namespace ${namespace} has changed`)
+    delete(this.cache[namespace])
+  }
+
+  private listFlags(namespace: string): Promise<Flag[]> {
+    return this.cache[namespace] || (this.cache[namespace] = this.flags.listFlags(namespace))
   }
 }
 

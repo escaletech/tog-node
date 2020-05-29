@@ -1,6 +1,6 @@
 import { Flag, Rollout, FlagNotFoundError, ClientOptions } from "./types";
 import RedisClient from 'ioredis';
-import { namespaceKey } from './keys'
+import { namespaceKey, namespaceChangedKey } from './keys'
 import { Redis } from "./redis";
 
 interface RedisFlag {
@@ -64,6 +64,7 @@ export class FlagClient {
       rollout: flag.rollout
     }
     await this.redis.hset(namespaceKey(flag.namespace), flag.name, JSON.stringify(sanitized))
+    await this.redis.publish(namespaceChangedKey, flag.namespace)
     return flag
   }
 
@@ -75,6 +76,7 @@ export class FlagClient {
    */
   async deleteFlag(namespace: string, name: string): Promise<boolean> {
     const res = await this.redis.hdel(namespaceKey(namespace), name)
+    await this.redis.publish(namespaceChangedKey, namespace)
     return res > 0
   }
 }
