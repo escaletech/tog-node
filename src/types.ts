@@ -1,3 +1,5 @@
+import { Logger } from "./logger"
+
 /** A flag's specification */
 export interface Flag {
   /** Flag's namespace */
@@ -59,6 +61,14 @@ export interface SessionOptions {
 export interface ClientOptions {
   /** Whether to connect to Redis as a cluster or not */
   cluster?: boolean
+}
+
+/**
+ * Options for creating session clients
+ */
+export interface SessionClientOptions extends ClientOptions {
+  timeout?: number
+  logger?: Logger
 }
 
 /** Error that is thrown when a flag cannot be found */

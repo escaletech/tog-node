@@ -1,7 +1,10 @@
-import { Session, SessionOptions, ClientOptions } from "./types";
+import { Session, SessionOptions, ClientOptions, SessionClientOptions } from "./types";
 import { resolveState } from './sessions';
 import { FlagClient } from "./flagClient";
 import { Redis } from "./redis";
+import { Logger, defaultLogger } from "./logger";
+
+const DEFAULT_TIMEOUT = 300
 
 /**
  * A client consuming sessions
@@ -13,13 +16,17 @@ import { Redis } from "./redis";
  * ```
  */
 export class SessionClient {
+  private readonly options: SessionClientOptions
+  private readonly logger: Logger
   private readonly flags: FlagClient
   readonly redis: Redis
 
   /**
    * @param redisUrl The Redis connection string
    */
-  constructor(redisUrl: string, options: ClientOptions = {}) {
+  constructor(redisUrl: string, options: SessionClientOptions = {}) {
+    this.options = options
+    this.logger = options.logger || defaultLogger
     this.flags = new FlagClient(redisUrl, options)
     this.redis = this.flags.redis
   }
@@ -31,18 +38,44 @@ export class SessionClient {
    * @param options Options used when creating the flag, which are ignored if it already exists
    */
   async session(namespace: string, id: string, options?: SessionOptions): Promise<Session> {
-    const flagOverrides = options && options.flags || {}
-    const flags = (await this.flags.listFlags(namespace))
-      .reduce((all, flag) => ({
-        ...all,
-        [flag.name]: resolveState(flag.rollout, flag.timestamp || 0, id)
-      }), {})
-    const session: Session = {
-      namespace,
-      id,
-      flags: { ...flags, ...flagOverrides }
-    }
+    try {
+      const flagOverrides = options && options.flags || {}
+      const availableFlags = await withTimeout(
+        this.options.timeout || DEFAULT_TIMEOUT,
+        () => this.flags.listFlags(namespace))
+      const flags = availableFlags
+        .reduce((all, flag) => ({
+          ...all,
+          [flag.name]: resolveState(flag.rollout, flag.timestamp || 0, id)
+        }), {})
+      const session: Session = {
+        namespace,
+        id,
+        flags: { ...flags, ...flagOverrides }
+      }
 
-    return session
+      return session
+    } catch (e) {
+      this.logger.error(e)
+      return { namespace, id, flags: {} }
+    }
   }
+}
+
+/**
+ * @hidden
+ */
+function withTimeout<T>(durationMs: number, promise: () => Promise<T>): Promise<T> {
+  let timeout: NodeJS.Timeout
+  const timeoutPromise: Promise<T> = new Promise((resolve, reject) => {
+    timeout = setTimeout(() => reject(new Error(`timeout after ${durationMs}ms`)), durationMs)
+  })
+
+  return Promise.race([
+    promise().then(res => {
+      clearTimeout(timeout)
+      return res
+    }),
+    timeoutPromise
+  ])
 }

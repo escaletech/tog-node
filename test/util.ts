@@ -1,6 +1,6 @@
 import RedisClient from 'ioredis';
 
-import { FlagClient, SessionClient, Flag } from '../src'
+import { FlagClient, SessionClient, Flag, SessionClientOptions } from '../src'
 import { namespaceKey } from '../src/keys';
 import { Redis } from '../src/redis';
 
@@ -15,10 +15,11 @@ export function newFlagClient (): [FlagClient, Redis] {
   return [tog, tog.redis]
 }
 
-export function newSessionClient (): [SessionClient, Redis] {
-  const tog = new SessionClient(redisUrl)
+export function newSessionClient (options?: SessionClientOptions): [SessionClient, Redis] {
+  const tog = new SessionClient(redisUrl, options)
   tog.redis.on('error', err => fail(err))
   clients.push(tog.redis)
+  clients.push(tog.subscriber)
   return [tog, tog.redis]
 }
 
@@ -36,4 +37,4 @@ export function newTimestamp(): number {
   return Math.round((new Date()).getTime() / 1000)
 }
 
-afterAll(() => clients.forEach(c => c.quit()))
+afterAll(() => clients.forEach(c => c.quit().catch(() => 'ok')))
