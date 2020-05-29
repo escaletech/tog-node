@@ -13,7 +13,7 @@ describe('session', () => {
         { namespace, timestamp: 2, name: 'white', rollout: [] }
       ])
 
-      const session = await tog.session('foo', 'abc123', { duration: 60 })
+      const session = await tog.session('foo', 'abc123')
       expect(session).toEqual({
         namespace: 'foo',
         id: 'abc123',
@@ -30,7 +30,7 @@ describe('session', () => {
         { namespace, timestamp: 2, name: 'white', rollout: [{ value: true, percentage: 100 }] }
       ])
 
-      const session = await tog.session('foo', 'abc123', { duration: 60 })
+      const session = await tog.session('foo', 'abc123')
       expect(session).toEqual({
         namespace: 'foo',
         id: 'abc123',
@@ -47,7 +47,7 @@ describe('session', () => {
         { namespace, timestamp: 2, name: 'white', rollout: [{ value: true, percentage: 0 }] }
       ])
 
-      const session = await tog.session('foo', 'abc123', { duration: 60 })
+      const session = await tog.session('foo', 'abc123')
       expect(session).toEqual({
         namespace: 'foo',
         id: 'abc123',
@@ -64,7 +64,7 @@ describe('session', () => {
         { namespace, timestamp: 2, name: 'white', rollout: [] }
       ])
 
-      const session = await tog.session('foo', 'abc123', { duration: 60, flags: { blue: true } })
+      const session = await tog.session('foo', 'abc123', { flags: { blue: true } })
       expect(session).toEqual({
         namespace: 'foo',
         id: 'abc123',
@@ -81,7 +81,7 @@ describe('session', () => {
         { namespace, timestamp: 2, name: 'white', rollout: [] }
       ])
 
-      const session = await tog.session('foo', 'abc123', { duration: 60, flags: { white: true } })
+      const session = await tog.session('foo', 'abc123', { flags: { white: true } })
       expect(session).toEqual({
         namespace: 'foo',
         id: 'abc123',

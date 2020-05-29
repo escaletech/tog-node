@@ -49,9 +49,6 @@ export interface Session {
  * Options for creating a new session
  */
 export interface SessionOptions {
-  /** Number of seconds for which the session should last */
-  duration?: number
-
   /** Flag values that should be overridden */
   flags?: Flags
 }

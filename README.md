@@ -20,7 +20,7 @@ const { SessionClient } = require('tog-node')
 const sessions = new SessionClient('redis://127.0.0.1:6379')
 
 // wherever you whish to retrieve a session
-const session = await sessions.session('my_app', 'session-123-xyz', { duration: 60 })
+const session = await sessions.session('my_app', 'session-123-xyz')
 
 const buttonColor = session.flags['blue-button'] ? 'blue' : 'red'
 ```

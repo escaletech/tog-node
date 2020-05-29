@@ -30,7 +30,7 @@ export class SessionClient {
    * @param id Unique session ID
    * @param options Options used when creating the flag, which are ignored if it already exists
    */
-  async session(namespace: string, id: string, options: SessionOptions): Promise<Session> {
+  async session(namespace: string, id: string, options?: SessionOptions): Promise<Session> {
     const flagOverrides = options && options.flags || {}
     const flags = (await this.flags.listFlags(namespace))
       .reduce((all, flag) => ({
