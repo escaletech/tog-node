@@ -1,9 +1,11 @@
 import { Flag, Rollout, FlagNotFoundError, ClientOptions } from "./types";
-import RedisClient, { Redis, Cluster } from 'ioredis';
-import { flagKey } from './keys'
+import RedisClient from 'ioredis';
+import { namespaceKey } from './keys'
+import { Redis } from "./redis";
 
 interface RedisFlag {
   description?: string
+  timestamp: number
   rollout: Rollout[]
 }
 
@@ -17,7 +19,7 @@ interface RedisFlag {
  * ```
  */
 export class FlagClient {
-  readonly redis: Redis | Cluster
+  readonly redis: Redis
 
   /**
    * @param redisUrl The Redis connection string
@@ -33,11 +35,10 @@ export class FlagClient {
    * @param namespace Flags namespace
    */
   async listFlags(namespace: string): Promise<Flag[]> {
-    const keys = 'nodes' in this.redis
-      ? await Promise.all(this.redis.nodes('all').map(n => n.keys(flagKey(namespace, '*'))))
-          .then(keys => Array.from(new Set<string>(([] as string[]).concat(...keys))))
-      : await this.redis.keys(flagKey(namespace, '*'))
-    return await Promise.all(keys.sort().map(key => this.getFlagByKey(key)))
+    const records = await this.redis.hgetall(namespaceKey(namespace))
+    return Object.keys(records).sort().map(name => {
+      return { namespace, name, ...JSON.parse(records[name]) }
+    })
   }
 
   /**
@@ -46,7 +47,10 @@ export class FlagClient {
    * @param name Flag name
    */
   async getFlag(namespace: string, name: string): Promise<Flag> {
-    return this.getFlagByKey(flagKey(namespace, name))
+    const flag = await this.redis.hget(namespaceKey(namespace), name)
+    return flag === null
+      ? Promise.reject(new FlagNotFoundError('flag not found'))
+      : { namespace, name, ...JSON.parse(flag) }
   }
 
   /**
@@ -56,9 +60,10 @@ export class FlagClient {
   async saveFlag(flag: Flag): Promise<Flag> {
     const sanitized: RedisFlag = {
       description: flag.description,
+      timestamp: Math.round((new Date()).getTime() / 1000),
       rollout: flag.rollout
     }
-    await this.redis.set(flagKey(flag.namespace, flag.name), JSON.stringify(sanitized))
+    await this.redis.hset(namespaceKey(flag.namespace), flag.name, JSON.stringify(sanitized))
     return flag
   }
 
@@ -69,7 +74,7 @@ export class FlagClient {
    * @returns Whether a flag existed and was deleted (`true`), or not (`false`)
    */
   async deleteFlag(namespace: string, name: string): Promise<boolean> {
-    const res = await this.redis.del(flagKey(namespace, name))
+    const res = await this.redis.hdel(namespaceKey(namespace), name)
     return res > 0
   }
 

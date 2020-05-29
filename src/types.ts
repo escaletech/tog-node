@@ -9,6 +9,9 @@ export interface Flag {
   /** An optional (short) description of what the flag does */
   description?: string
 
+  /** UNIX timestamp of when the flag was last changed */
+  timestamp?: number
+
   /** Specification of how the flag's value is computed for new sessions */
   rollout: Rollout[]
 }

@@ -1,19 +1,21 @@
-import RedisClient, { Redis } from 'ioredis';
+import RedisClient from 'ioredis';
 
 import { FlagClient, SessionClient, Flag } from '../src'
+import { namespaceKey } from '../src/keys';
+import { Redis } from '../src/redis';
 
 const redisUrl = 'redis://127.0.0.1:6379/1'
 
 const clients = []
 
-export function newFlagClient (n: number = 1): [FlagClient, Redis] {
+export function newFlagClient (): [FlagClient, Redis] {
   const tog = new FlagClient(redisUrl)
   tog.redis.on('error', err => fail(err))
   clients.push(tog.redis)
   return [tog, tog.redis]
 }
 
-export function newSessionClient (n: number = 1): [SessionClient, Redis] {
+export function newSessionClient (): [SessionClient, Redis] {
   const tog = new SessionClient(redisUrl)
   tog.redis.on('error', err => fail(err))
   clients.push(tog.redis)
@@ -26,8 +28,12 @@ export function cleanUp(): Promise<any> {
 }
 
 export function saveAllFlags (redis: Redis, flags: Flag[]): Promise<any> {
-  return Promise.all(flags.map(flag =>
-    redis.set(`tog2:flag:${flag.namespace}:${flag.name}`, JSON.stringify(flag))))
+  return Promise.all(flags.map(({ namespace, name, ...flag }) =>
+    redis.hset(namespaceKey(namespace), name, JSON.stringify(flag))))
+}
+
+export function newTimestamp(): number {
+  return Math.round((new Date()).getTime() / 1000)
 }
 
 afterAll(() => clients.forEach(c => c.quit()))
