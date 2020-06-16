@@ -2388,7 +2388,7 @@ img {
 <span class="hljs-keyword">const</span> sessions = <span class="hljs-keyword">new</span> SessionClient(<span class="hljs-string">'redis://127.0.0.1:6379'</span>)
 
 <span class="hljs-comment">// wherever you whish to retrieve a session</span>
-<span class="hljs-keyword">const</span> session = <span class="hljs-keyword">await</span> sessions.session(<span class="hljs-string">'my_app'</span>, <span class="hljs-string">'session-123-xyz'</span>, { <span class="hljs-attr">duration</span>: <span class="hljs-number">60</span> })
+<span class="hljs-keyword">const</span> session = <span class="hljs-keyword">await</span> sessions.session(<span class="hljs-string">'my_app'</span>, <span class="hljs-string">'session-123-xyz'</span>)
 
 <span class="hljs-keyword">const</span> buttonColor = session.flags[<span class="hljs-string">'blue-button'</span>] ? <span class="hljs-string">'blue'</span> : <span class="hljs-string">'red'</span></code></pre>
 			<a href="#for-managing-flags" id="for-managing-flags" style="color: inherit; text-decoration: none;">
@@ -2424,6 +2424,8 @@ img {
 							<li class="tsd-kind-module"><a href="modules/_flagclient_.html" class="tsd-kind-icon">&quot;flag<wbr>Client&quot;</a></li>
 							<li class="tsd-kind-module"><a href="modules/_index_.html" class="tsd-kind-icon">&quot;index&quot;</a></li>
 							<li class="tsd-kind-module"><a href="modules/_keys_.html" class="tsd-kind-icon">&quot;keys&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_logger_.html" class="tsd-kind-icon">&quot;logger&quot;</a></li>
+							<li class="tsd-kind-module"><a href="modules/_redis_.html" class="tsd-kind-icon">&quot;redis&quot;</a></li>
 							<li class="tsd-kind-module"><a href="modules/_sessionclient_.html" class="tsd-kind-icon">&quot;session<wbr>Client&quot;</a></li>
 							<li class="tsd-kind-module"><a href="modules/_sessions_.html" class="tsd-kind-icon">&quot;sessions&quot;</a></li>
 							<li class="tsd-kind-module"><a href="modules/_types_.html" class="tsd-kind-icon">&quot;types&quot;</a></li>

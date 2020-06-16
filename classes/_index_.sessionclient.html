@@ -2377,11 +2377,29 @@ img {
 				<li class=" tsd-kind-constructor tsd-parent-kind-class">
 					<a href="_index_.sessionclient.html#constructor" class="tsd-kind-icon">constructor</a>
 				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="_index_.sessionclient.html#cache" class="tsd-kind-icon">cache</a>
+				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a href="_index_.sessionclient.html#flags" class="tsd-kind-icon">flags</a>
 				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a href="_index_.sessionclient.html#logger" class="tsd-kind-icon">logger</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a href="_index_.sessionclient.html#options" class="tsd-kind-icon">options</a>
+				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="_index_.sessionclient.html#redis" class="tsd-kind-icon">redis</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="_index_.sessionclient.html#subscriber" class="tsd-kind-icon">subscriber</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a href="_index_.sessionclient.html#clearcache" class="tsd-kind-icon">clear<wbr>Cache</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a href="_index_.sessionclient.html#listflags" class="tsd-kind-icon">list<wbr>Flags</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="_index_.sessionclient.html#session" class="tsd-kind-icon">session</a>
@@ -2402,6 +2420,9 @@ img {
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-module">
 			<a href="../interfaces/_index_.session.html" class="tsd-kind-icon">Session</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-module">
+			<a href="../interfaces/_index_.sessionclientoptions.html" class="tsd-kind-icon">Session<wbr>Client<wbr>Options</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-module">
 			<a href="../interfaces/_index_.sessionoptions.html" class="tsd-kind-icon">Session<wbr>Options</a>
@@ -2444,13 +2465,19 @@ img {
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="_index_.sessionclient.html#cache" class="tsd-kind-icon">cache</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_index_.sessionclient.html#flags" class="tsd-kind-icon">flags</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_index_.sessionclient.html#logger" class="tsd-kind-icon">logger</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_index_.sessionclient.html#options" class="tsd-kind-icon">options</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="_index_.sessionclient.html#redis" class="tsd-kind-icon">redis</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="_index_.sessionclient.html#subscriber" class="tsd-kind-icon">subscriber</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_index_.sessionclient.html#clearcache" class="tsd-kind-icon">clear<wbr>Cache</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_index_.sessionclient.html#listflags" class="tsd-kind-icon">list<wbr>Flags</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_index_.sessionclient.html#session" class="tsd-kind-icon">session</a></li>
 						</ul>
 					</section>
@@ -2463,13 +2490,13 @@ img {
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Session<wbr>Client<span class="tsd-signature-symbol">(</span>redisUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/_index_.clientoptions.html" class="tsd-signature-type">ClientOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_index_.sessionclient.html" class="tsd-signature-type">SessionClient</a></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Session<wbr>Client<span class="tsd-signature-symbol">(</span>redisUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/_index_.sessionclientoptions.html" class="tsd-signature-type">SessionClientOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_index_.sessionclient.html" class="tsd-signature-type">SessionClient</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/16d6f56/src/sessionClient.ts#L18">src/sessionClient.ts:18</a></li>
+								<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L27">src/sessionClient.ts:27</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2485,7 +2512,7 @@ img {
 								</div>
 							</li>
 							<li>
-								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/_index_.clientoptions.html" class="tsd-signature-type">ClientOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/_index_.sessionclientoptions.html" class="tsd-signature-type">SessionClientOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <a href="_index_.sessionclient.html" class="tsd-signature-type">SessionClient</a></h4>
@@ -2495,40 +2522,134 @@ img {
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="cache" class="tsd-anchor"></a>
+				<h3>cache</h3>
+				<div class="tsd-signature tsd-kind-icon">cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L27">src/sessionClient.ts:27</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter-index-signature">
+							<h5><span class="tsd-signature-symbol">[</span>namespace: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_index_.flag.html" class="tsd-signature-type">Flag</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+						</li>
+					</ul>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 				<a name="flags" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagPrivate">Private</span> flags</h3>
 				<div class="tsd-signature tsd-kind-icon">flags<span class="tsd-signature-symbol">:</span> <a href="_flagclient_.flagclient.html" class="tsd-signature-type">FlagClient</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/16d6f56/src/sessionClient.ts#L17">src/sessionClient.ts:17</a></li>
+						<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L24">src/sessionClient.ts:24</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<a name="logger" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> logger</h3>
+				<div class="tsd-signature tsd-kind-icon">logger<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_logger_.logger.html" class="tsd-signature-type">Logger</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L23">src/sessionClient.ts:23</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<a name="options" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> options</h3>
+				<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_index_.sessionclientoptions.html" class="tsd-signature-type">SessionClientOptions</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L22">src/sessionClient.ts:22</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="redis" class="tsd-anchor"></a>
 				<h3>redis</h3>
-				<div class="tsd-signature tsd-kind-icon">redis<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Redis</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Cluster</span></div>
+				<div class="tsd-signature tsd-kind-icon">redis<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_redis_.redis.html" class="tsd-signature-type">Redis</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/16d6f56/src/sessionClient.ts#L18">src/sessionClient.ts:18</a></li>
+						<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L25">src/sessionClient.ts:25</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="subscriber" class="tsd-anchor"></a>
+				<h3>subscriber</h3>
+				<div class="tsd-signature tsd-kind-icon">subscriber<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_redis_.redis.html" class="tsd-signature-type">Redis</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L26">src/sessionClient.ts:26</a></li>
 					</ul>
 				</aside>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="session" class="tsd-anchor"></a>
-				<h3>session</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">session<span class="tsd-signature-symbol">(</span>namespace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_index_.sessionoptions.html" class="tsd-signature-type">SessionOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_index_.session.html" class="tsd-signature-type">Session</a><span class="tsd-signature-symbol">&gt;</span></li>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<a name="clearcache" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> clear<wbr>Cache</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<li class="tsd-signature tsd-kind-icon">clear<wbr>Cache<span class="tsd-signature-symbol">(</span>namespace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/16d6f56/src/sessionClient.ts#L34">src/sessionClient.ts:34</a></li>
+								<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L77">src/sessionClient.ts:77</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>namespace: <span class="tsd-signature-type">string</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<a name="listflags" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> list<wbr>Flags</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<li class="tsd-signature tsd-kind-icon">list<wbr>Flags<span class="tsd-signature-symbol">(</span>namespace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_index_.flag.html" class="tsd-signature-type">Flag</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L82">src/sessionClient.ts:82</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>namespace: <span class="tsd-signature-type">string</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_index_.flag.html" class="tsd-signature-type">Flag</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="session" class="tsd-anchor"></a>
+				<h3>session</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">session<span class="tsd-signature-symbol">(</span>namespace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/_index_.sessionoptions.html" class="tsd-signature-type">SessionOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_index_.session.html" class="tsd-signature-type">Session</a><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/escaletech/tog-node/blob/fa1948c/src/sessionClient.ts#L53">src/sessionClient.ts:53</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2551,7 +2672,7 @@ img {
 								</div>
 							</li>
 							<li>
-								<h5>options: <a href="../interfaces/_index_.sessionoptions.html" class="tsd-signature-type">SessionOptions</a></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/_index_.sessionoptions.html" class="tsd-signature-type">SessionOptions</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>Options used when creating the flag, which are ignored if it already exists</p>
 								</div>
