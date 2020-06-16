@@ -2,7 +2,7 @@
   "inputFiles": [
     "./src/index.ts"
   ],
-  "mode": "library",
+  "mode": "modules",
   "out": "docs",
   "theme": "minimal"
 }
