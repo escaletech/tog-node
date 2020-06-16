@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/escaletech/tog-node/compare/v0.3.6...v0.4.0) (2020-06-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* flag keys have changed.
+
+### Features
+
+* adopt hash-based picking of rollouts ([54e559c](https://github.com/escaletech/tog-node/commit/54e559c74e7f109536c2c1c36cac2915a303e21e))
+* adopt new flag format using hash map ([6556edd](https://github.com/escaletech/tog-node/commit/6556eddb3a835748ef5492b6f41a8b2c9b24b336))
+* cease to store sessions ([eca88ec](https://github.com/escaletech/tog-node/commit/eca88ecdc58db1c9a95e8ce31b23998f714d21b9))
+* implement cache for sessions ([d8c7949](https://github.com/escaletech/tog-node/commit/d8c794998564e057911549d17ec3958f7e380c6a))
+* improve session client resilliency ([d1db2b1](https://github.com/escaletech/tog-node/commit/d1db2b10a5617b7ca97c9db1d400aa2bdc62dd01))
+* remove duration from sessions ([53c755f](https://github.com/escaletech/tog-node/commit/53c755f2972c9a67915a34715ded4009ccbb7d8a))
+
 ### [0.3.6](https://github.com/escaletech/tog-node/compare/v0.3.5...v0.3.6) (2020-03-03)
 
 
