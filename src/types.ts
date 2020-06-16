@@ -1,3 +1,5 @@
+import { Logger } from "./logger"
+
 /** A flag's specification */
 export interface Flag {
   /** Flag's namespace */
@@ -8,6 +10,9 @@ export interface Flag {
 
   /** An optional (short) description of what the flag does */
   description?: string
+
+  /** UNIX timestamp of when the flag was last changed */
+  timestamp?: number
 
   /** Specification of how the flag's value is computed for new sessions */
   rollout: Rollout[]
@@ -46,9 +51,6 @@ export interface Session {
  * Options for creating a new session
  */
 export interface SessionOptions {
-  /** Number of seconds for which the session should last */
-  duration?: number
-
   /** Flag values that should be overridden */
   flags?: Flags
 }
@@ -59,6 +61,14 @@ export interface SessionOptions {
 export interface ClientOptions {
   /** Whether to connect to Redis as a cluster or not */
   cluster?: boolean
+}
+
+/**
+ * Options for creating session clients
+ */
+export interface SessionClientOptions extends ClientOptions {
+  timeout?: number
+  logger?: Logger
 }
 
 /** Error that is thrown when a flag cannot be found */

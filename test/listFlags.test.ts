@@ -1,5 +1,5 @@
 import { Flag, Rollout } from '../src'
-import { newFlagClient, cleanUp } from './util'
+import { newFlagClient, cleanUp, saveAllFlags } from './util'
 
 describe('list flags', () => {
   afterEach(() => cleanUp())
@@ -15,23 +15,21 @@ describe('list flags', () => {
   test('returns existing flags', async () => {
     const [tog, redis] = newFlagClient()
 
-    const flagTable: [string, string, Rollout, string?][] = [
-      ['foo', 'orange', { value: true }],
-      ['bar', 'other-namespace', { value: true }],
-      ['foo', 'black', { value: false }],
-      ['foo', 'red', { value: true }, 'some description'],
-      ['foo', 'pink', { value: true, percentage: 30 }],
+    const flagTable: [string, string, number, Rollout, string?][] = [
+      ['foo', 'orange', 111, { value: true }],
+      ['bar', 'other-namespace', 222, { value: true }],
+      ['foo', 'black', 333, { value: false }],
+      ['foo', 'red', 444, { value: true }, 'some description'],
+      ['foo', 'pink', 555, { value: true, percentage: 30 }],
     ]
 
-    const sources: Flag[] = flagTable.map(([namespace, name, rollout, description]) =>
+    const sources: Flag[] = flagTable.map(([namespace, name, timestamp, rollout, description]) =>
       description
-        ? ({ namespace, name, rollout: [rollout], description })
-        : ({ namespace, name, rollout: [rollout] })
+        ? ({ namespace, name, timestamp, rollout: [rollout], description })
+        : ({ namespace, name, timestamp, rollout: [rollout] })
     )
 
-    const saveFlag = ({ namespace, name, rollout, description }) =>
-      redis.set(`tog2:flag:${namespace}:${name}`, JSON.stringify({ rollout, description }))
-    await Promise.all(sources.map(saveFlag))
+    await saveAllFlags(redis, sources)
 
     const flags = await tog.listFlags('foo')
 

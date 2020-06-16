@@ -1,5 +1,6 @@
 import { Flag } from '../src'
-import { newFlagClient, cleanUp } from './util'
+import { newFlagClient, cleanUp, newTimestamp } from './util'
+import { namespaceKey } from '../src/keys'
 
 describe.only('save flag', () => {
   afterEach(() => cleanUp())
@@ -14,8 +15,8 @@ describe.only('save flag', () => {
     }
     await tog.saveFlag(flag)
 
-    expect(await redis.get('tog2:flag:foo:black'))
-      .toBe(JSON.stringify({ rollout: flag.rollout }))
+    const saved = JSON.parse(await redis.hget(namespaceKey('foo'), 'black'))
+    expect(saved.rollout).toMatchObject(flag.rollout)
   })
 
   test('disabled flag', async () => {
@@ -28,8 +29,8 @@ describe.only('save flag', () => {
     }
     await tog.saveFlag(flag)
 
-    expect(await redis.get('tog2:flag:foo:black'))
-      .toBe(JSON.stringify({ rollout: flag.rollout }))
+    const saved = JSON.parse(await redis.hget(namespaceKey('foo'), 'black'))
+    expect(saved.rollout).toMatchObject(flag.rollout)
   })
 
   test('flag with description', async () => {
@@ -38,12 +39,13 @@ describe.only('save flag', () => {
     const flag: Flag = {
       namespace: 'foo',
       name: 'black',
+      timestamp: 123,
       rollout: [{ value: true }],
       description: 'some description'
     }
     await tog.saveFlag(flag)
 
-    const saved = JSON.parse(await redis.get('tog2:flag:foo:black'))
+    const saved = JSON.parse(await redis.hget(namespaceKey('foo'), 'black'))
     expect(saved.description).toBe('some description')
   })
 
@@ -59,7 +61,22 @@ describe.only('save flag', () => {
     }
     await tog.saveFlag(flag)
 
-    const saved = JSON.parse(await redis.get('tog2:flag:foo:black'))
+    const saved = JSON.parse(await redis.hget(namespaceKey('foo'), 'black'))
     expect(saved.rollout).toMatchObject(flag.rollout)
+  })
+
+  test('saves timestamp', async () => {
+    const [tog, redis] = newFlagClient()
+
+    const flag: Flag = {
+      namespace: 'foo',
+      name: 'black',
+      timestamp: 123,
+      rollout: [{ value: true }],
+    }
+    await tog.saveFlag(flag)
+
+    const saved = JSON.parse(await redis.hget(namespaceKey('foo'), 'black'))
+    expect(saved.timestamp).toBeCloseTo(newTimestamp())
   })
 })

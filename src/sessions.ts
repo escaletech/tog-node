@@ -1,3 +1,5 @@
+import murmur from 'murmurhash-js'
+
 import { Rollout, Session } from './types'
 
 export function parseSession (namespace: string, id: string, value: string): Session {
@@ -8,16 +10,18 @@ export function parseSession (namespace: string, id: string, value: string): Ses
   }
 }
 
-export function resolveState (rollouts: Rollout[]): boolean {
+export function resolveState (rollouts: Rollout[], timestamp: number, sessionId: string): boolean {
   if (!rollouts || rollouts.length === 0) {
     return false
   }
 
-  const rollout = rollouts.find(r => {
-    return r.percentage !== undefined
-      ? Math.floor(Math.random() * 99) + 1 <= r.percentage
-      : r.value
-  })
+  const param = murmur.murmur3(`${sessionId}${timestamp}`) % 100
+
+  const rollout = rollouts.find(r =>
+    r.percentage === undefined
+      ? r.value
+      : param <= r.percentage
+  )
 
   return (rollout && rollout.value) || false
 }
