@@ -89,6 +89,7 @@ workflows:
       - build-and-test:
           <<: *release_only
       - deploy:
+          context: github-create-release
           <<: *release_only
           requires:
             - build-and-test
