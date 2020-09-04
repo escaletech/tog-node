@@ -1,5 +1,8 @@
 version: 2
 
+orbs:
+  gh-release: escaletech/gh-conventional-release@0.1
+
 jobs:
   build-and-test:
     docker:
@@ -92,3 +95,8 @@ workflows:
           <<: *release_only
           requires:
             - build-and-test
+      - gh-release/create-release:
+          context: github-create-release
+          requires:
+            - deploy
+          <<: *release_only
