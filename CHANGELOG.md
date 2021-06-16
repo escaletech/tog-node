@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.3](https://github.com/escaletech/tog-node/compare/v0.4.2...v0.4.3) (2021-06-16)
+
+
+### Bug Fixes
+
+* update several vulnerable libs ([#18](https://github.com/escaletech/tog-node/issues/18)) ([c59fea9](https://github.com/escaletech/tog-node/commit/c59fea94452bf6cbac4b6c2439acc4a235e37778))
+* upgrade node-notifier according to CVE-2020-7789 ([#17](https://github.com/escaletech/tog-node/issues/17)) ([9961af3](https://github.com/escaletech/tog-node/commit/9961af3edf539e925d09b6dcdfa17d9cddd1eca6))
+
 ### [0.4.2](https://github.com/escaletech/tog-node/compare/v0.4.0...v0.4.2) (2020-09-04)
 
 
