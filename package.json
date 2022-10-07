@@ -8,7 +8,8 @@
     "test:watch": "jest --watch --runInBand",
     "docs": "typedoc",
     "build": "tsc",
-    "release": "./scripts/release.sh"
+    "release": "./scripts/release.sh",
+    "prepare": "husky install"
   },
   "files": [
     "/lib"
@@ -28,6 +29,7 @@
     "@types/jest": "^27.4.0",
     "@types/murmurhash-js": "^1.0.3",
     "babel-jest": "^25.5.1",
+    "husky": "^8.0.1",
     "jest": "^27.5.1",
     "standard-version": "^9.0.0",
     "typedoc": "^0.22.11",
@@ -46,5 +48,27 @@
       ],
       "@babel/preset-typescript"
     ]
+  }, 
+  "jest": {
+    "verbose": true,
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": "\\.(spec|test)\\.ts$",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.(t|j)s"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules",
+      "<rootDir>/migrations",
+      "<rootDir>/dist",
+      "<rootDir>/test"
+    ],
+    "coverageDirectory": "<rootDir>/test/coverage",
+    "testEnvironment": "node"
   }
 }

@@ -40,7 +40,7 @@ describe.only('save flag', () => {
       namespace: 'foo',
       name: 'black',
       timestamp: 123,
-      rollout: [{ value: true }],
+      rollout: [{ value: true , percentage: 90}],
       description: 'some description'
     }
     await tog.saveFlag(flag)
@@ -56,7 +56,7 @@ describe.only('save flag', () => {
       namespace: 'foo',
       name: 'black',
       rollout: [
-        { value: true, percentage: 42 }
+        { value: true, percentage: 42 , traits: ["black","circle"]}
       ]
     }
     await tog.saveFlag(flag)
@@ -72,7 +72,7 @@ describe.only('save flag', () => {
       namespace: 'foo',
       name: 'black',
       timestamp: 123,
-      rollout: [{ value: true }],
+      rollout: [{ value: true , percentage: 73, traits:["blue"]}],
     }
     await tog.saveFlag(flag)
 

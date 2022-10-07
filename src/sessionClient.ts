@@ -50,7 +50,7 @@ export class SessionClient {
    * @param id Unique session ID
    * @param options Options used when creating the flag, which are ignored if it already exists
    */
-  async session(namespace: string, id: string, options?: SessionOptions): Promise<Session> {
+  async session(namespace: string, id: string, traits?: string[], options?: SessionOptions): Promise<Session> {
     try {
       const flagOverrides = options && options.flags || {}
       const availableFlags = await withTimeout(
@@ -59,7 +59,7 @@ export class SessionClient {
       const flags = availableFlags
         .reduce((all, flag) => ({
           ...all,
-          [flag.name]: resolveState(flag.rollout, flag.timestamp || 0, id)
+          [flag.name]: resolveState(flag.rollout, flag.timestamp || 0, id, traits ?? [])
         }), {})
       const session: Session = {
         namespace,
