@@ -49,14 +49,14 @@ export function resolveState (rollouts: Rollout[], timestamp: number, sessionId:
   let no_of_traits = -1;
   let rollout_percentage = rollouts.reduce( 
     (pv, cro) => {
-      if ( cro.traits == null || cro.traits?.reduce((tpv, tcv) => {return tpv && sessionTraits.includes(tcv) ;}, true) ) { // if all Rollout Traits are found in session traits
+      if ( cro.traits == null || cro.traits?.reduce((tpv, tcv) => {return tpv && sessionTraits.includes(tcv)}, (1==1)) ) { // if all Rollout Traits are found in session traits
         if ( (cro.traits?.length ?? 0) > no_of_traits ) { // if this Rollout strategy has more specific matching than previous ones use this percentage value (default is 100)
-            no_of_traits = (cro.traits?.length ?? 0); 
-            if ( cro.value ) { 
-              return (typeof cro.percentage === 'number' )? cro.percentage : 100 ;
-            } else { // if this is a "turn off" strategy, turn the percentage to a negative number, 
-              return (typeof cro.percentage === 'number' )? -cro.percentage : -100 ;
-            }
+          no_of_traits = (cro.traits?.length ?? 0); 
+          if ( cro.value ) { 
+            return (typeof cro.percentage === 'number' )? cro.percentage : 100 ;
+          } else { // if this is a "turn off" strategy, turn the percentage to a negative number, 
+            return (typeof cro.percentage === 'number' )? -cro.percentage : -100 ;
+          }
         } else if ((cro.traits?.length ?? 0 ) == no_of_traits  ) { // if equal #_of_matching traits, false take precedence, then larger percentage value
           if ( cro.value == false ) {
             return Math.min( pv, (typeof cro.percentage === 'number' )? -cro.percentage : -100 );
