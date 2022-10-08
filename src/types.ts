@@ -23,6 +23,9 @@ export interface Rollout {
   /** If defined, applies the given value for X% of the sessions */
   percentage?: number
 
+  /** If defined, applies to only sessions match ALL the elements in this string[] */
+  traits?: string[]
+  
   /** Value to be used */
   value: FlagValue
 }
