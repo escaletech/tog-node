@@ -4,8 +4,8 @@ import { newSessionClient, cleanUp, saveAllFlags, newFlagClient } from './util'
 import { SessionClient } from '../src'
 
 const fakeLogger = () => ({
-  loggedMessage: undefined,
-  infoMessage: <string>undefined,
+  loggedMessage: <string><unknown>undefined,
+  infoMessage: <string><unknown>undefined,
   error(message) {
     this.loggedMessage = message
   },
@@ -30,7 +30,7 @@ describe('session', () => {
         id: 'abc123',
         flags: {}
       })
-      expect(logger.loggedMessage.toString()).toEqual('Error: timeout after 300ms')
+      expect(logger.loggedMessage?.toString()).toEqual('Error: timeout after 300ms')
       tog.redis.quit()
       tog.subscriber.quit()
     })
@@ -47,7 +47,7 @@ describe('session', () => {
         id: 'abc123',
         flags: {}
       })
-      expect(logger.loggedMessage.toString()).toEqual('Error: Connection is closed.')
+      expect(logger.loggedMessage?.toString()).toEqual('Error: Connection is closed.')
     })
   })
 

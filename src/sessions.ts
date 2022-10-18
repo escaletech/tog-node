@@ -1,4 +1,4 @@
-import murmur from 'murmurhash-js'
+//import murmur from 'murmurhash-js'
 
 import { Rollout, Session } from './types'
 
@@ -10,21 +10,21 @@ export function parseSession (namespace: string, id: string, value: string): Ses
   }
 }
 
-export function resolveState_no_traits (rollouts: Rollout[], timestamp: number, sessionId: string): boolean {
-  if (!rollouts || rollouts.length === 0) {
-    return false
-  }
+// export function resolveState_no_traits (rollouts: Rollout[], timestamp: number, sessionId: string): boolean {
+//   if (!rollouts || rollouts.length === 0) {
+//     return false
+//   }
 
-  const param = murmur.murmur3(`${sessionId}${timestamp}`) % 100
+//   const param = murmur.murmur3(`${sessionId}${timestamp}`) % 100
 
-  const rollout = rollouts.find(r =>
-    r.percentage === undefined
-      ? r.value
-      : param <= r.percentage
-  )
+//   const rollout = rollouts.find(r =>
+//     r.percentage === undefined
+//       ? r.value
+//       : param <= r.percentage
+//   )
 
-  return (rollout && rollout.value) || false
-}
+//   return (rollout && rollout.value) || false
+// }
 
 const hashCode = function(str:string) {
   var hash = 0,
@@ -43,7 +43,7 @@ export function resolveState (rollouts: Rollout[], timestamp: number, sessionId:
     return false
   }
 
-  const param = hashCode(`${sessionId}${timestamp}`) % 100;
+  const param = Math.abs(hashCode(`${sessionId}${timestamp}`)) % 100;
   // the strategy for session traits to rollout traits matches: 
   // * both traits are string[], the match can be multi to multi.  
   // a match means all of the rollout traits are found in the session traits (i.e. give rollout traits ["a","b","c"], session traits ["a","b","c"] and ["a","b","c","d"] will match but session traits ["a","b"] do not)
@@ -61,7 +61,7 @@ export function resolveState (rollouts: Rollout[], timestamp: number, sessionId:
   let no_of_traits = -1;
   let rollout_percentage = rollouts.reduce( 
     (pv, cro) => {
-      if ( cro.traits == null || cro.traits?.reduce((tpv, tcv) => {return tpv && sessionTraits.includes(tcv)}, (1==1)) ) { // if all Rollout Traits are found in session traits
+      if ( cro.traits == null || cro.traits?.reduce((tpv, tcv) => {return tpv && sessionTraits.includes(tcv)}, (1==1)) ) { // if all traits of a Rollout  are found in session traits
         if ( (cro.traits?.length ?? 0) > no_of_traits ) { // if this Rollout strategy has more specific matching than previous ones use this percentage value (default is 100)
           no_of_traits = (cro.traits?.length ?? 0); 
           if ( cro.value ) { 
