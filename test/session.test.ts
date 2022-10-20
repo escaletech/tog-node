@@ -4,8 +4,8 @@ import { newSessionClient, cleanUp, saveAllFlags, newFlagClient } from './util'
 import { SessionClient } from '../src'
 
 const fakeLogger = () => ({
-  loggedMessage: undefined,
-  infoMessage: <string>undefined,
+  loggedMessage: <string><unknown>undefined,
+  infoMessage: <string><unknown>undefined,
   error(message) {
     this.loggedMessage = message
   },
@@ -30,7 +30,7 @@ describe('session', () => {
         id: 'abc123',
         flags: {}
       })
-      expect(logger.loggedMessage.toString()).toEqual('Error: timeout after 300ms')
+      expect(logger.loggedMessage?.toString()).toEqual('Error: timeout after 300ms')
       tog.redis.quit()
       tog.subscriber.quit()
     })
@@ -47,7 +47,7 @@ describe('session', () => {
         id: 'abc123',
         flags: {}
       })
-      expect(logger.loggedMessage.toString()).toEqual('Error: Connection is closed.')
+      expect(logger.loggedMessage?.toString()).toEqual('Error: Connection is closed.')
     })
   })
 
@@ -149,7 +149,7 @@ describe('session', () => {
         { namespace, timestamp: 2, name: 'white', rollout: [] }
       ])
 
-      const session = await tog.session('foo', 'abc123', { flags: { blue: true } })
+      const session = await tog.session('foo', 'abc123', [], { flags: { blue: true } })
       expect(session).toEqual({
         namespace: 'foo',
         id: 'abc123',
@@ -166,7 +166,7 @@ describe('session', () => {
         { namespace, timestamp: 2, name: 'white', rollout: [] }
       ])
 
-      const session = await tog.session('foo', 'abc123', { flags: { white: true } })
+      const session = await tog.session('foo', 'abc123', [], { flags: { white: true } })
       expect(session).toEqual({
         namespace: 'foo',
         id: 'abc123',

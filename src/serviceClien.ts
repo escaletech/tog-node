@@ -18,24 +18,32 @@ const DEFAULT_TIMEOUT = 300
  * const tog = new SessionClient('redis://127.0.0.1:6379')
  * ```
  */
-export class SessionClient {
+export class ServiceClient {
   private readonly options: SessionClientOptions
   private readonly logger: Logger
   private readonly flags: FlagClient
+  private availableFlags: Flag[]
+  private readonly namespace: string
   readonly redis: Redis
   readonly subscriber: Redis
   readonly cache: {[namespace: string]: Promise<Flag[]>}
 
+  // every instance of ServiceClient intialized should be for one namespace only:
   /**
    * @param redisUrl The Redis connection string
+   * @param namespace The application namespace this ServiceClient serves
+   * @param options The client options {timeout, logger}
    */
-  constructor(redisUrl: string, options: SessionClientOptions = {}) {
+  constructor(redisUrl: string, namespace: string, options: SessionClientOptions = {}) {
     this.options = options
     this.logger = options.logger || defaultLogger
+    this.namespace = namespace || ""
     this.flags = new FlagClient(redisUrl, options)
+    this.availableFlags=[]
     this.redis = this.flags.redis
     this.cache = {}
-
+    this.listFlagsWithTimeout(this.options.timeout || DEFAULT_TIMEOUT )
+    
     this.subscriber = options.cluster
       ? new RedisClient.Cluster([redisUrl])
       : new RedisClient(redisUrl)
@@ -46,17 +54,15 @@ export class SessionClient {
 
   /**
    * Resolves a session, either by retrieving it or by computing a new one
-   * @param namespace Flags namespace
    * @param id Unique session ID
+   * @param traits Properties a session has, i.e. admin-user, or production env
    * @param options Options used when creating the flag, which are ignored if it already exists
    */
-  async session(namespace: string, id: string, traits?: string[], options?: SessionOptions): Promise<Session> {
+  async flagsForSession(id: string, traits?: string[], options?: SessionOptions): Promise<Session> {
+    const namespace = this.namespace;
     try {
       const flagOverrides = options && options.flags || {}
-      const availableFlags = await withTimeout(
-        this.options.timeout || DEFAULT_TIMEOUT,
-        () => this.listFlags(namespace))
-      const flags = availableFlags
+      const flags = this.availableFlags
         .reduce((all, flag) => ({
           ...all,
           [flag.name]: resolveState(flag.rollout, flag.timestamp || 0, id, traits ?? [])
@@ -82,22 +88,26 @@ export class SessionClient {
   private listFlags(namespace: string): Promise<Flag[]> {
     return this.cache[namespace] || (this.cache[namespace] = this.flags.listFlags(namespace))
   }
-}
 
-/**
- * @hidden
- */
-function withTimeout<T>(durationMs: number, promise: () => Promise<T>): Promise<T> {
-  let timeout: NodeJS.Timeout
-  const timeoutPromise: Promise<T> = new Promise((resolve, reject) => {
-    timeout = setTimeout(() => reject(new Error(`timeout after ${durationMs}ms`)), durationMs)
-  })
 
-  return Promise.race([
-    promise().then(res => {
-      clearTimeout(timeout)
-      return res
-    }),
-    timeoutPromise
-  ])
+  /**
+   * @hidden
+   */
+  private listFlagsWithTimeout<T>(durationMs: number): Promise<Flag[]|T> {
+    let timeout: NodeJS.Timeout
+    const timeoutPromise: Promise<T> = new Promise((resolve, reject) => {
+      timeout = setTimeout(() => reject(new Error(`timeout after ${durationMs}ms`)), durationMs)
+    })
+    //this.availableFlags = this.listFlags(this.namespace)
+    return Promise.race([
+      this.listFlags(this.namespace).then(res => {
+        clearTimeout(timeout)
+        this.availableFlags = res
+        return res
+      }),
+      timeoutPromise
+    ])
+  }
+
+
 }
